@@ -7,6 +7,8 @@ export const Header = () => {
       <MaxWidthWrapper className="">
         <div className="flex items-center justify-between">
           <div>OOT Tracker</div>
+
+          {/* TODO: use clerk components for loading and signin/signout */}
           <UserButton />
         </div>
       </MaxWidthWrapper>
