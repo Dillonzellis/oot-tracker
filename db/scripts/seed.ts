@@ -18,6 +18,11 @@ const main = async () => {
         title: "deku-stick",
         imageSrc: "/deku-stick.png",
       },
+      {
+        id: 2,
+        title: "fairy-ocarina",
+        imageSrc: "/fairy-ocarina.png",
+      },
     ]);
 
     console.log("Seeding finished");
