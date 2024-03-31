@@ -1,20 +1,20 @@
-import { cn } from "@/lib/utils";
-import Image, { StaticImageData } from "next/image";
+// import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { items } from "../../db/schema";
 
 type Props = {
-  imgSrc: string;
-  active: boolean;
+  item: typeof items.$inferSelect;
 };
 
-export const Item = ({ imgSrc, active }: Props) => {
+export const Item = ({ item }: Props) => {
   return (
     <div className="h-20 w-20">
       <Image
-        src={imgSrc}
+        src={item.imageSrc}
         alt="oot"
         height={80}
         width={80}
-        className={cn(active ? "opacity-100" : "opacity-30")}
+        // className={cn(active ? "opacity-100" : "opacity-30")}
       />
     </div>
   );

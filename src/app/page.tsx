@@ -13,9 +13,12 @@ export default async function Home() {
         </h1>
         <div className="flex gap-x-4">
           {data.map((item) => (
-            <Item key={item.id} imgSrc={item.imageSrc} active={item.active} />
+            // <Item key={item.id} imgSrc={item.imageSrc} active={item.active} />
+            <Item key={item.id} item={item} />
           ))}
         </div>
+
+        {/* <Item item={data[0]} /> */}
       </MaxWidthWrapper>
     </main>
   );
