@@ -22,7 +22,7 @@ const main = async () => {
       {
         itemId: 2,
         itemName: "fairy-ocarina",
-        imageSrc: "/fairy-stick.png",
+        imageSrc: "/fairy-ocarina.png",
       },
     ]);
 
