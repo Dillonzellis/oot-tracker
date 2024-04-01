@@ -1,3 +1,4 @@
+import Link from "next/link";
 import MaxWidthWrapper from "./max-width-wrapper";
 import { UserButton } from "@clerk/nextjs";
 
@@ -6,7 +7,7 @@ export const Header = () => {
     <header className="border-b py-4">
       <MaxWidthWrapper className="">
         <div className="flex items-center justify-between">
-          <div>OOT Tracker</div>
+          <Link href="/">TrackerHub</Link>
 
           {/* TODO: use clerk components for loading and signin/signout */}
           <UserButton />
