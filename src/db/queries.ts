@@ -3,10 +3,12 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs";
 
 import db from "./drizzle";
-import { userItems } from "./schema";
+import { items, userItems } from "./schema";
 
-export const getItems = cache(async () => {
-  const data = await db.query.items.findMany();
+export const getItems = cache(async (gameId: number) => {
+  const data = await db.query.items.findMany({
+    where: eq(items.gameId, gameId),
+  });
   return data;
 });
 
