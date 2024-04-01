@@ -4,7 +4,9 @@ export const items = pgTable("items", {
   itemId: serial("itemId").primaryKey(),
   itemName: text("itemName").notNull().default("item"),
   imageSrc: text("imageSrc").notNull(),
-  gameId: integer("gameId").references(() => games.gameId),
+  gameId: integer("gameId")
+    .references(() => games.gameId, { onDelete: "cascade" })
+    .notNull(),
 });
 
 export const itemStates = pgTable("item_states", {
