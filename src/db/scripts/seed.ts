@@ -40,8 +40,8 @@ const main = async () => {
       },
       {
         itemId: 3,
-        itemName: "kokiri-sword",
-        imageSrc: "/kokiri-sword.png",
+        itemName: "ocarina-of-time",
+        imageSrc: "/ocarina-time.png",
         gameId: 2,
       },
     ]);
