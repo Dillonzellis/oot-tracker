@@ -30,11 +30,19 @@ const main = async () => {
         itemId: 1,
         itemName: "deku-stick",
         imageSrc: "/deku-stick.png",
+        gameId: 1,
       },
       {
         itemId: 2,
         itemName: "fairy-ocarina",
         imageSrc: "/fairy-ocarina.png",
+        gameId: 1,
+      },
+      {
+        itemId: 3,
+        itemName: "kokiri-sword",
+        imageSrc: "/kokiri-sword.png",
+        gameId: 2,
       },
     ]);
 
