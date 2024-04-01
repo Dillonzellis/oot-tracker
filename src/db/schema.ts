@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
 
 export const items = pgTable("items", {
@@ -9,6 +10,21 @@ export const items = pgTable("items", {
     .notNull(),
 });
 
+export const itemsRelations = relations(items, ({ one }) => ({
+  games: one(games, {
+    fields: [items.gameId],
+    references: [games.gameId],
+  }),
+}));
+
+// export const lessonsRelations = relations(lessons, ({ one, many }) => ({
+//   unit: one(units, {
+//     fields: [lessons.unitId],
+//     references: [units.id],
+//   }),
+//   challenges: many(challenges),
+// }));
+//
 export const itemStates = pgTable("item_states", {
   stateId: serial("stateid").primaryKey(),
   stateName: text("stateName").notNull().default("not found"),
