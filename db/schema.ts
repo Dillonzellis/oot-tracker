@@ -1,15 +1,22 @@
-import { pgTable, serial, boolean, text, integer } from "drizzle-orm/pg-core";
-
-export const userItems = pgTable("user_items", {
-  userid: serial("user_id").primaryKey(),
-  itemId: integer("item_id")
-    .references(() => items.id, { onDelete: "cascade" })
-    .notNull(),
-  itemState: boolean("item_state").notNull().default(false),
-});
+import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
 
 export const items = pgTable("items", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  imageSrc: text("image_src").notNull(),
+  itemId: serial("itemId").primaryKey(),
+  itemName: text("itemName").notNull().default("item"),
+  imageSrc: text("imageSrc").notNull(),
+});
+
+export const itemStates = pgTable("item_states", {
+  stateId: serial("stateid").primaryKey(),
+  stateName: text("stateName").notNull().default("not found"),
+});
+
+export const userItems = pgTable("user_items", {
+  userId: text("userId").primaryKey(),
+  itemId: integer("itemId")
+    .references(() => items.itemId)
+    .notNull(),
+  stateId: integer("stateId")
+    .references(() => itemStates.stateId)
+    .notNull(),
 });
