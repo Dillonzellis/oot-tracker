@@ -4,6 +4,7 @@ export const items = pgTable("items", {
   itemId: serial("itemId").primaryKey(),
   itemName: text("itemName").notNull().default("item"),
   imageSrc: text("imageSrc").notNull(),
+  gameId: integer("gameId").references(() => games.gameId),
 });
 
 export const itemStates = pgTable("item_states", {
