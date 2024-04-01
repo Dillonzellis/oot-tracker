@@ -9,7 +9,7 @@
     "lint": "next lint",
     "db:studio": "bunx drizzle-kit studio",
     "db:push": "bunx drizzle-kit push:pg",
-    "db:seed": "bun ./db/scripts/seed.ts"
+    "db:seed": "bun ./src/db/scripts/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",

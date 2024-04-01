@@ -20,3 +20,8 @@ export const userItems = pgTable("user_items", {
     .references(() => itemStates.stateId)
     .notNull(),
 });
+
+export const games = pgTable("games", {
+  gameId: serial("gameId").primaryKey(),
+  gameName: text("gameName").notNull().default("game"),
+});

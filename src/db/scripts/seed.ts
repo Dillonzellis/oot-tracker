@@ -9,9 +9,21 @@ const main = async () => {
   try {
     console.log("Seeding database");
 
+    await db.delete(schema.games);
     await db.delete(schema.items);
     await db.delete(schema.itemStates);
     await db.delete(schema.userItems);
+
+    await db.insert(schema.games).values([
+      {
+        gameId: 1,
+        gameName: "ocarina-of-time",
+      },
+      {
+        gameId: 2,
+        gameName: "majoras-mask",
+      },
+    ]);
 
     await db.insert(schema.items).values([
       {
