@@ -10,18 +10,19 @@ const main = async () => {
     console.log("Seeding database");
 
     await db.delete(schema.items);
+    await db.delete(schema.itemStates);
     await db.delete(schema.userItems);
 
     await db.insert(schema.items).values([
       {
-        id: 1,
-        title: "deku-stick",
+        itemId: 1,
+        itemName: "deku-stick",
         imageSrc: "/deku-stick.png",
       },
       {
-        id: 2,
-        title: "fairy-ocarina",
-        imageSrc: "/fairy-ocarina.png",
+        itemId: 2,
+        itemName: "fairy-ocarina",
+        imageSrc: "/fairy-stick.png",
       },
     ]);
 
