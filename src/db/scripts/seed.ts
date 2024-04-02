@@ -12,6 +12,7 @@ const main = async () => {
     await db.delete(schema.games);
     await db.delete(schema.items);
     await db.delete(schema.itemStates);
+    await db.delete(schema.userProgress);
 
     await db.insert(schema.games).values([
       {
@@ -55,6 +56,21 @@ const main = async () => {
         userId: "1",
         itemId: 2,
         type: "UPGRADED 1",
+      },
+    ]);
+
+    await db.insert(schema.userProgress).values([
+      {
+        userId: "1",
+        userName: "Link",
+        userImageSrc: "/link.png",
+        activeGameId: 1,
+      },
+      {
+        userId: "2",
+        userName: "Zelda",
+        userImageSrc: "/zelda.png",
+        activeGameId: 2,
       },
     ]);
 
