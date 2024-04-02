@@ -1,9 +1,9 @@
 import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { getItems } from "@/db/queries";
+import { getItemsByGame } from "@/db/queries";
 
 export default async function MMHome() {
-  const data = await getItems(2);
+  const data = await getItemsByGame(2);
 
   return (
     <main className="">
