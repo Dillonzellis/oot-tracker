@@ -36,6 +36,27 @@ export const itemStates = pgTable("item_states", {
   type: itemStateEnum("type").notNull().default("NOT FOUND"),
 });
 
+export const games = pgTable("games", {
+  gameId: serial("gameId").primaryKey(),
+  gameName: text("gameName").notNull().default("game"),
+});
+
+export const userProgress = pgTable("user_progress", {
+  userId: text("user_id").primaryKey(),
+  userName: text("user_name").notNull().default("User"),
+  userImageSrc: text("user_image_src").notNull().default("/mascot.svg"),
+  activeGameId: integer("activeGameId").references(() => games.gameId, {
+    onDelete: "cascade",
+  }),
+});
+
+export const userProgressRelations = relations(userProgress, ({ one }) => ({
+  activeGame: one(games, {
+    fields: [userProgress.activeGameId],
+    references: [games.gameId],
+  }),
+}));
+
 // export const userItems = pgTable("user_items", {
 //   userId: text("userId").primaryKey(),
 //   userName: text("userName").notNull().default("User"),
@@ -50,8 +71,3 @@ export const itemStates = pgTable("item_states", {
 //     .references(() => games.gameId, { onDelete: "cascade" })
 //     .notNull(),
 // });
-
-export const games = pgTable("games", {
-  gameId: serial("gameId").primaryKey(),
-  gameName: text("gameName").notNull().default("game"),
-});
