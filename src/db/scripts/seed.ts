@@ -12,7 +12,6 @@ const main = async () => {
     await db.delete(schema.games);
     await db.delete(schema.items);
     await db.delete(schema.itemStates);
-    await db.delete(schema.userItems);
 
     await db.insert(schema.games).values([
       {
@@ -28,21 +27,34 @@ const main = async () => {
     await db.insert(schema.items).values([
       {
         itemId: 1,
+        gameId: 1,
         itemName: "deku-stick",
         imageSrc: "/deku-stick.png",
-        gameId: 1,
       },
       {
         itemId: 2,
+        gameId: 1,
         itemName: "fairy-ocarina",
         imageSrc: "/fairy-ocarina.png",
-        gameId: 1,
       },
       {
         itemId: 3,
+        gameId: 2,
         itemName: "ocarina-of-time",
         imageSrc: "/ocarina-time.png",
-        gameId: 2,
+      },
+    ]);
+
+    await db.insert(schema.itemStates).values([
+      {
+        userId: "1",
+        itemId: 1,
+        type: "FOUND",
+      },
+      {
+        userId: "1",
+        itemId: 2,
+        type: "UPGRADED 1",
       },
     ]);
 
