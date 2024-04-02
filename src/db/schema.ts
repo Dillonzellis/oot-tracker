@@ -39,6 +39,7 @@ export const itemStates = pgTable("item_states", {
 export const games = pgTable("games", {
   gameId: serial("gameId").primaryKey(),
   gameName: text("gameName").notNull().default("game"),
+  imageSrc: text("imageSrc").notNull().default("/deku-stick.png"),
 });
 
 export const userProgress = pgTable("user_progress", {
