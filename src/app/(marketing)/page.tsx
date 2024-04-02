@@ -1,28 +1,15 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import Link from "next/link";
+import { GameList } from "./game-list";
+import { getGames } from "@/db/queries";
 
-type GameLinkProps = {
-  href: string;
-  children: React.ReactNode;
-};
+export default async function MarketingHome() {
+  const games = await getGames();
 
-const GameLink = ({ href, children }: GameLinkProps) => {
-  return (
-    <Link href={href} className="text-xl font-medium">
-      {children}
-    </Link>
-  );
-};
-
-export default function Home() {
   return (
     <main className="">
       <MaxWidthWrapper>
         <h1 className="py-12 text-center text-2xl font-bold">Pick a game</h1>
-        <div className="flex justify-center gap-12">
-          <GameLink href="/oot">Ocarina of Time</GameLink>
-          <GameLink href="/mm">Majora's Mask</GameLink>
-        </div>
+        <GameList games={games} />
       </MaxWidthWrapper>
     </main>
   );
