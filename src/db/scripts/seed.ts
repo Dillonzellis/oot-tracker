@@ -18,10 +18,12 @@ const main = async () => {
       {
         gameId: 1,
         gameName: "ocarina-of-time",
+        imageSrc: "/ocarina-time.png",
       },
       {
         gameId: 2,
         gameName: "majoras-mask",
+        imageSrc: "/deku-stick.png",
       },
     ]);
 
