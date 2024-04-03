@@ -9,7 +9,7 @@ type Props = {
 
 export const Card = ({ title, id, imageSrc, onClick }: Props) => {
   return (
-    <div className="" onClick={() => onClick(id)}>
+    <div className="cursor-pointer" onClick={() => onClick(id)}>
       <Image src={imageSrc} alt="mascot" width={150} height={150} />
       <p className="text-center text-2xl font-bold">{title}</p>
     </div>

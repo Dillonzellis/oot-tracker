@@ -4,6 +4,7 @@ import { games } from "@/db/schema";
 import Link from "next/link";
 import { useTransition } from "react";
 import { Card } from "./card";
+import { upsertUserProgress } from "@/db/actions/userItems";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
@@ -19,9 +20,9 @@ export const GameList = ({ games }: Props) => {
     //   return router.push("/learn");
     // }
 
-    // startTransition(() => {
-    //   upsertUserProgress(id).catch(() => console.log("Something went wrong."));
-    // });
+    startTransition(() => {
+      upsertUserProgress(id).catch(() => console.log("Something went wrong."));
+    });
   };
 
   return (
@@ -34,7 +35,6 @@ export const GameList = ({ games }: Props) => {
           imageSrc={game.imageSrc}
           onClick={onClick}
         />
-        // <div>{game.gameName}</div>
       ))}
     </div>
   );
