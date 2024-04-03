@@ -1,6 +1,6 @@
 "use client";
 
-import { games } from "@/db/schema";
+import { games, userProgress } from "@/db/schema";
 import Link from "next/link";
 import { useTransition } from "react";
 import { Card } from "./card";
@@ -8,9 +8,10 @@ import { upsertUserProgress } from "@/db/actions/userItems";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
+  activeGameId?: typeof userProgress.$inferSelect.activeGameId;
 };
 
-export const GameList = ({ games }: Props) => {
+export const GameList = ({ games, activeGameId }: Props) => {
   const [pending, startTransition] = useTransition();
 
   const onClick = (id: number) => {
@@ -34,6 +35,8 @@ export const GameList = ({ games }: Props) => {
           id={game.gameId}
           imageSrc={game.imageSrc}
           onClick={onClick}
+          disabled={pending}
+          active={game.gameId === activeGameId}
         />
       ))}
     </div>
