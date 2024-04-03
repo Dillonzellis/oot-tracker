@@ -1,10 +1,10 @@
 "use client";
 
 import { games, userProgress } from "@/db/schema";
-import Link from "next/link";
 import { useTransition } from "react";
 import { Card } from "./card";
 import { upsertUserProgress } from "@/db/actions/userItems";
+import router from "next/router";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
@@ -17,9 +17,9 @@ export const GameList = ({ games, activeGameId }: Props) => {
   const onClick = (id: number) => {
     if (pending) return;
 
-    // if (id === activeCourseId) {
-    //   return router.push("/learn");
-    // }
+    if (id === activeGameId) {
+      return router.push("/tracker");
+    }
 
     startTransition(() => {
       upsertUserProgress(id).catch(() => console.log("Something went wrong."));

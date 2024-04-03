@@ -8,8 +8,6 @@ export const Header = () => {
       <MaxWidthWrapper className="">
         <div className="flex items-center justify-between">
           <Link href="/">TrackerHub</Link>
-
-          {/* TODO: use clerk components for loading and signin/signout */}
           <UserButton />
         </div>
       </MaxWidthWrapper>

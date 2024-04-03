@@ -1,21 +1,63 @@
+import Link from "next/link";
+import { Loader } from "lucide-react";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { GameList } from "./game-list";
-import { getGames, getUserProgress } from "@/db/queries";
 
 export default async function MarketingHome() {
-  const gamesData = await getGames();
-  const userProgressData = await getUserProgress();
-
-  const [games, userProgress] = await Promise.all([
-    gamesData,
-    userProgressData,
-  ]);
-
   return (
-    <main className="">
+    <main>
       <MaxWidthWrapper>
-        <h1 className="py-12 text-center text-2xl font-bold">Pick a game</h1>
-        <GameList games={games} activeGameId={userProgress?.activeGameId} />
+        <div className="flex min-h-[calc(100vh-57px)] flex-col items-center justify-center gap-8">
+          <h1 className="text-center text-3xl text-white">
+            Welcome to the Game Library
+          </h1>
+          <div className="flex w-full max-w-[330px] flex-col items-center gap-y-3">
+            <ClerkLoading>
+              <Loader className="h-5 w-5 animate-spin text-muted-foreground" />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <SignedOut>
+                <SignUpButton
+                  mode="modal"
+                  afterSignInUrl="/games"
+                  afterSignUpUrl="/games"
+                >
+                  <Button size="lg" variant="secondary" className="w-full">
+                    Get Started
+                  </Button>
+                </SignUpButton>
+                <SignInButton
+                  mode="modal"
+                  afterSignInUrl="/games"
+                  afterSignUpUrl="/games"
+                >
+                  <Button size="lg" variant="outline" className="w-full">
+                    I already have an account
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full"
+                  asChild
+                >
+                  <Link href="/games">Continue Current Randomizer</Link>
+                </Button>
+              </SignedIn>
+            </ClerkLoaded>
+          </div>
+        </div>
       </MaxWidthWrapper>
     </main>
   );
