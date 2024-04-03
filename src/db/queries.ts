@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs";
 
 import db from "./drizzle";
-import { games, itemStates, items } from "./schema";
+import { games, itemStates, items, userProgress } from "./schema";
 
 export const getGames = cache(async () => {
   const data = await db.query.games.findMany();
@@ -23,6 +23,23 @@ export const getItemsByGame = cache(async (gameId: number) => {
   const data = await db.query.items.findMany({
     where: eq(items.gameId, gameId),
   });
+  return data;
+});
+
+export const getUserProgress = cache(async () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = await db.query.userProgress.findFirst({
+    where: eq(userProgress.userId, userId),
+    with: {
+      activeGame: true,
+    },
+  });
+
   return data;
 });
 
