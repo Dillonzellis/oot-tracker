@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 import Image from "next/image";
 
 type Props = {
@@ -20,13 +21,19 @@ export const Card = ({
 }: Props) => {
   return (
     <div
+      onClick={() => onClick(id)}
       className={cn(
         "cursor-pointer",
         disabled && "pointer-events-none opacity-50",
       )}
-      onClick={() => onClick(id)}
     >
-      {active && <h1 className="text-5xl text-white">Active</h1>}
+      <div className="min-[24px] flex w-full items-center justify-end">
+        {active && (
+          <div className="flex items-center justify-center rounded-md bg-green-600 p-1.5">
+            <Check className="h-4 w-4 stroke-[4] text-white" />
+          </div>
+        )}
+      </div>
       <Image src={imageSrc} alt="mascot" width={150} height={150} />
       <p className="text-center text-2xl font-bold">{title}</p>
     </div>
