@@ -7,6 +7,7 @@ import db from "@/db/drizzle";
 import { getGamebyId, getUserProgress } from "../queries";
 import { userProgress } from "../schema";
 import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
 
 export const upsertUserProgress = async (gameId: number) => {
   const { userId } = auth();
@@ -25,11 +26,14 @@ export const upsertUserProgress = async (gameId: number) => {
   const existingUserProgress = await getUserProgress();
 
   if (existingUserProgress) {
-    await db.update(userProgress).set({
-      activeGameId: gameId,
-      userName: user.firstName || "User",
-      userImageSrc: user.imageUrl || "/mascot.svg",
-    });
+    await db
+      .update(userProgress)
+      .set({
+        activeGameId: gameId,
+        userName: user.firstName || "User",
+        userImageSrc: user.imageUrl || "/mascot.svg",
+      })
+      .where(eq(userProgress.userId, userId));
 
     revalidatePath("/games");
     revalidatePath("/tracker");
