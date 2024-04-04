@@ -2,9 +2,9 @@
 
 import { games, userProgress } from "@/db/schema";
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Card } from "./card";
 import { upsertUserProgress } from "@/db/actions/userItems";
-import router from "next/router";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
@@ -12,6 +12,7 @@ type Props = {
 };
 
 export const GameList = ({ games, activeGameId }: Props) => {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   const onClick = (id: number) => {
