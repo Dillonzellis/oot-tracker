@@ -26,6 +26,21 @@ export const getItemsByGame = cache(async (gameId: number) => {
   return data;
 });
 
+export const getItemsByActiveGame = cache(async () => {
+  const { userId } = auth();
+  const userProgress = await getUserProgress();
+
+  if (!userId || !userProgress?.activeGameId) {
+    return [];
+  }
+
+  const data = db.query.items.findMany({
+    where: eq(items.gameId, userProgress.activeGameId),
+  });
+
+  return data;
+});
+
 export const getUserProgress = cache(async () => {
   const { userId } = auth();
 
