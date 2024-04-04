@@ -17,12 +17,12 @@ const main = async () => {
     await db.insert(schema.games).values([
       {
         gameId: 1,
-        gameName: "ocarina-of-time",
+        gameName: "Ocarina of Time",
         imageSrc: "/ocarina-time.png",
       },
       {
         gameId: 2,
-        gameName: "majoras-mask",
+        gameName: "Majora's Mask",
         imageSrc: "/deku-stick.png",
       },
     ]);
