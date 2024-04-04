@@ -1,6 +1,7 @@
 "use server";
 
 import { auth, currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import db from "@/db/drizzle";
 import { getGamebyId, getUserProgress } from "../queries";
@@ -30,7 +31,9 @@ export const upsertUserProgress = async (gameId: number) => {
       userImageSrc: user.imageUrl || "/mascot.svg",
     });
 
-    revalidatePath("/");
+    revalidatePath("/games");
+    revalidatePath("/tracker");
+    redirect("/tracker");
   }
 
   await db.insert(userProgress).values({
@@ -40,5 +43,7 @@ export const upsertUserProgress = async (gameId: number) => {
     activeGameId: gameId,
   });
 
-  revalidatePath("/");
+  revalidatePath("/games");
+  revalidatePath("/tracker");
+  redirect("/tracker");
 };
