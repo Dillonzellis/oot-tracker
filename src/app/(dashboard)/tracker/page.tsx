@@ -1,22 +1,33 @@
 import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { getItemsByGame } from "@/db/queries";
+import { getItemsByActiveGame, getUserProgress } from "@/db/queries";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const data = await getItemsByGame(1);
+  const userProgressData = await getUserProgress();
+  const gameItemsData = await getItemsByActiveGame();
 
-  return (
+  const [userProgress, gameItems] = await Promise.all([
+    userProgressData,
+    gameItemsData,
+  ]);
+
+  if (!userProgress || !userProgress.activeGameId) {
+    redirect("/games");
+  }
+
+  return userProgress.activeGame ? (
     <main className="">
       <MaxWidthWrapper>
         <h1 className="scroll-m-20 pt-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
-          OOT Tracker
+          {userProgress.activeGame.gameName}
         </h1>
         <div className="flex gap-x-4">
-          {data.map((item) => (
+          {gameItems.map((item) => (
             <Item key={item.itemId} item={item} />
           ))}
         </div>
       </MaxWidthWrapper>
     </main>
-  );
+  ) : null;
 }
