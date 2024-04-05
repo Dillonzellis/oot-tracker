@@ -50,14 +50,18 @@ const main = async () => {
 
     await db.insert(schema.itemStates).values([
       {
+        itemStateId: 1,
         userId: "1",
         itemId: 1,
-        type: "FOUND",
+        gameId: 1,
+        state: "FOUND",
       },
       {
-        userId: "1",
-        itemId: 2,
-        type: "UPGRADED 1",
+        itemStateId: 2,
+        userId: "2",
+        itemId: 3,
+        gameId: 2,
+        state: "UPGRADED 1",
       },
     ]);
 

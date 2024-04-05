@@ -21,7 +21,7 @@ export const itemsRelations = relations(items, ({ one }) => ({
   }),
 }));
 
-export const itemStateEnum = pgEnum("type", [
+export const itemStateEnum = pgEnum("state", [
   "NOT FOUND",
   "FOUND",
   "UPGRADED 1",
@@ -30,11 +30,27 @@ export const itemStateEnum = pgEnum("type", [
 export const itemStates = pgTable("item_states", {
   itemStateId: serial("itemStateId").primaryKey(),
   userId: text("userId").notNull(),
+  gameId: integer("gameId"),
   itemId: integer("itemId")
     .references(() => items.itemId, { onDelete: "cascade" })
     .notNull(),
-  type: itemStateEnum("type").notNull().default("NOT FOUND"),
+  state: itemStateEnum("state").notNull().default("NOT FOUND"),
 });
+
+export const itemStatesRelations = relations(itemStates, ({ one }) => ({
+  user: one(userProgress, {
+    fields: [itemStates.userId],
+    references: [userProgress.userId],
+  }),
+  item: one(items, {
+    fields: [itemStates.itemId],
+    references: [items.itemId],
+  }),
+  game: one(games, {
+    fields: [itemStates.gameId],
+    references: [games.gameId],
+  }),
+}));
 
 export const games = pgTable("games", {
   gameId: serial("gameId").primaryKey(),

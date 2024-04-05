@@ -1,15 +1,21 @@
 import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { getItemsByActiveGame, getUserProgress } from "@/db/queries";
+import {
+  getItemState,
+  getItemsByActiveGame,
+  getUserProgress,
+} from "@/db/queries";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
   const userProgressData = await getUserProgress();
   const gameItemsData = await getItemsByActiveGame();
+  const itemStatesData = await getItemState("user_2eIRmnG1dI4mVtJ2u9xu2acIluz");
 
-  const [userProgress, gameItems] = await Promise.all([
+  const [userProgress, gameItems, itemState] = await Promise.all([
     userProgressData,
     gameItemsData,
+    itemStatesData,
   ]);
 
   if (!userProgress || !userProgress.activeGameId) {
@@ -26,6 +32,7 @@ export default async function Home() {
           {gameItems.map((item) => (
             <Item key={item.itemId} item={item} />
           ))}
+          {JSON.stringify(itemState?.state)}
         </div>
       </MaxWidthWrapper>
     </main>

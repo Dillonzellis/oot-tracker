@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import db from "@/db/drizzle";
 import { getGamebyId, getUserProgress } from "../queries";
-import { userProgress } from "../schema";
+import { itemStates, userProgress } from "../schema";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 
@@ -46,6 +46,11 @@ export const upsertUserProgress = async (gameId: number) => {
     userImageSrc: user.imageUrl || "/mascot.svg",
     activeGameId: gameId,
   });
+
+  // await db.insert(itemStates).values({
+  //   userId,
+  //   itemId: 1,
+  // });
 
   revalidatePath("/games");
   revalidatePath("/tracker");

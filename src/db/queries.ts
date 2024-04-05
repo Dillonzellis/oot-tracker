@@ -41,6 +41,27 @@ export const getItemsByActiveGame = cache(async () => {
   return data;
 });
 
+// get by UserID and activegame id
+export const getItemState = cache(async (user: any) => {
+  const { userId } = auth();
+  const userProgress = await getUserProgress();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = db.query.itemStates.findFirst({
+    where: eq(itemStates.userId, userId),
+
+    with: {
+      item: true,
+      game: true,
+    },
+  });
+
+  return data;
+});
+
 export const getUserProgress = cache(async () => {
   const { userId } = auth();
 
