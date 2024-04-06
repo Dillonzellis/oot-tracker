@@ -9,76 +9,80 @@ const main = async () => {
   try {
     console.log("Seeding database");
 
-    await db.delete(schema.games);
-    await db.delete(schema.items);
-    await db.delete(schema.itemStates);
-    await db.delete(schema.userProgress);
+    await db.delete(schema.Games);
+    await db.delete(schema.Items);
+    await db.delete(schema.ItemStates);
 
-    await db.insert(schema.games).values([
+    await db.insert(schema.Games).values([
       {
-        gameId: 1,
-        gameName: "Ocarina of Time",
-        imageSrc: "/ocarina-time.png",
+        game_id: 1,
+        name: "Ocarina of Time",
+        image_src: "/ocarina-time.png",
       },
       {
-        gameId: 2,
-        gameName: "Majora's Mask",
-        imageSrc: "/deku-stick.png",
+        game_id: 2,
+        name: "Majora's Mask",
+        image_src: "/deku-stick.png",
       },
     ]);
 
-    await db.insert(schema.items).values([
+    await db.insert(schema.ItemStates).values([
       {
-        itemId: 1,
-        gameId: 1,
-        itemName: "deku-stick",
-        imageSrc: "/deku-stick.png",
+        state_id: 1,
+        state: "NOT FOUND",
       },
       {
-        itemId: 2,
-        gameId: 1,
-        itemName: "fairy-ocarina",
-        imageSrc: "/fairy-ocarina.png",
-      },
-      {
-        itemId: 3,
-        gameId: 2,
-        itemName: "ocarina-of-time",
-        imageSrc: "/ocarina-time.png",
-      },
-    ]);
-
-    await db.insert(schema.itemStates).values([
-      {
-        itemStateId: 1,
-        userId: "1",
-        itemId: 1,
-        gameId: 1,
+        state_id: 2,
         state: "FOUND",
       },
       {
-        itemStateId: 2,
-        userId: "2",
-        itemId: 3,
-        gameId: 2,
+        state_id: 3,
         state: "UPGRADED 1",
       },
     ]);
 
-    await db.insert(schema.userProgress).values([
+    await db.insert(schema.Items).values([
       {
-        userId: "1",
-        userName: "Link",
-        userImageSrc: "/link.png",
-        activeGameId: 1,
+        item_id: 1,
+        game_id: 1,
+        name: "deku-stick",
+        image_src: "/deku-stick.png",
       },
       {
-        userId: "2",
-        userName: "Zelda",
-        userImageSrc: "/zelda.png",
-        activeGameId: 2,
+        item_id: 2,
+        game_id: 1,
+        name: "fairy-ocarina",
+        image_src: "/fairy-ocarina.png",
+      },
+      {
+        item_id: 3,
+        game_id: 2,
+        name: "ocarina-of-time",
+        image_src: "/ocarina-time.png",
       },
     ]);
+
+    // await db.insert(schema.UserItems).values([
+    //
+    //
+    //
+    // ]);
+
+    //
+    // await db.insert(schema.userProgress).values([
+    //   {
+    //     userId: "1",
+    //     userName: "Link",
+    //     userImageSrc: "/link.png",
+    //     activeGameId: 1,
+    //   },
+    //   {
+    //     userId: "2",
+    //     userName: "Zelda",
+    //     userImageSrc: "/zelda.png",
+    //     activeGameId: 2,
+    //   },
+    // ]);
 
     console.log("Seeding finished");
   } catch (error) {
