@@ -12,6 +12,7 @@ const main = async () => {
     await db.delete(schema.Games);
     await db.delete(schema.Items);
     await db.delete(schema.ItemStates);
+    await db.delete(schema.UserItems);
 
     await db.insert(schema.Games).values([
       {
@@ -65,27 +66,21 @@ const main = async () => {
       },
     ]);
 
-    // await db.insert(schema.UserItems).values([
-    //
-    //
-    //
-    // ]);
+    await db.insert(schema.UserItems).values([
+      {
+        user_id: "1",
+        user_name: "Link",
+        user_image_src: "/link.png",
+        active_game_id: 1,
+      },
 
-    //
-    // await db.insert(schema.userProgress).values([
-    //   {
-    //     userId: "1",
-    //     userName: "Link",
-    //     userImageSrc: "/link.png",
-    //     activeGameId: 1,
-    //   },
-    //   {
-    //     userId: "2",
-    //     userName: "Zelda",
-    //     userImageSrc: "/zelda.png",
-    //     activeGameId: 2,
-    //   },
-    // ]);
+      {
+        user_id: "2",
+        user_name: "Zelda",
+        user_image_src: "/zelda.png",
+        active_game_id: 2,
+      },
+    ]);
 
     console.log("Seeding finished");
   } catch (error) {

@@ -42,3 +42,30 @@ export const ItemStates = pgTable("ItemStates", {
   state_id: serial("state_id").primaryKey(),
   state: itemStateEnum("state").notNull().default("NOT FOUND"),
 });
+
+export const UserItems = pgTable("UserItems", {
+  user_id: text("user_id").primaryKey(),
+  user_name: text("user_name").notNull().default("User"),
+  user_image_src: text("user_image_src").notNull().default("/mascot.svg"),
+  active_game_id: integer("active_game_id").references(() => Games.game_id, {
+    onDelete: "cascade",
+  }),
+});
+
+export const userItemRelations = relations(UserItems, ({ one }) => ({
+  activeGame: one(Games, {
+    fields: [UserItems.active_game_id],
+    references: [Games.game_id],
+  }),
+}));
+
+// export const userItemRelations = relations(UserItems, ({ one }) => ({
+//   item: one(Items, {
+//     fields: [UserItems.item_id],
+//     references: [Items.item_id],
+//   }),
+//   user: one(Users, {
+//     fields: [UserItems.user_id],
+//     references: [Users.user_id],
+//   }),
+// }));
