@@ -9,13 +9,13 @@ export const Games = pgTable("Games", {
 
 export const Items = pgTable("Items", {
   item_id: serial("item_id").primaryKey(),
+  name: text("name").notNull(),
+  image_src: text("image_src").notNull().default("/deku-stick.png"),
   game_id: integer("game_id")
     .notNull()
     .references(() => Games.game_id, {
       onDelete: "cascade",
     }),
-  name: text("name").notNull(),
-  image_src: text("image_src").notNull().default("/deku-stick.png"),
   item_state: integer("item_state").references(() => ItemStates.state_id, {
     onDelete: "cascade",
   }),
