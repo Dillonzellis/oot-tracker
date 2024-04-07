@@ -28,7 +28,7 @@ export const itemRelations = relations(Items, ({ one }) => ({
   }),
   state: one(ItemStates, {
     fields: [Items.item_state],
-    references: [ItemStates.state],
+    references: [ItemStates.state_id],
   }),
 }));
 
@@ -42,18 +42,3 @@ export const ItemStates = pgTable("ItemStates", {
   state_id: serial("state_id").primaryKey(),
   state: itemStateEnum("state").notNull().default("NOT FOUND"),
 });
-
-// export const UserItems = pgTable("UserItems", {
-//   user_item_id: serial("user_item_id").primaryKey(),
-//   user_id: text("user_id").notNull(),
-//   item_id: integer("item_id")
-//     .notNull()
-//     .references(() => Items.item_id, {
-//       onDelete: "cascade",
-//     }),
-//   state_id: integer("state_id")
-//     .notNull()
-//     .references(() => ItemStates.state_id, {
-//       onDelete: "cascade",
-//     }),
-// });
