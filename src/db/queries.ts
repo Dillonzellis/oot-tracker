@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs";
 
 import db from "./drizzle";
-import { games, itemStates, items, userProgress } from "./schema";
+import { games, items, user } from "./schema";
 
 export const getGames = cache(async () => {
   const data = await db.query.games.findMany();
@@ -13,7 +13,7 @@ export const getGames = cache(async () => {
 
 export const getGamebyId = cache(async (gameId: number) => {
   const data = await db.query.games.findFirst({
-    where: eq(games.gameId, gameId),
+    where: eq(games.id, gameId),
   });
 
   return data;
@@ -21,63 +21,77 @@ export const getGamebyId = cache(async (gameId: number) => {
 
 export const getItemsByGame = cache(async (gameId: number) => {
   const data = await db.query.items.findMany({
-    where: eq(items.gameId, gameId),
+    where: eq(items.game_id, gameId),
   });
+  return data;
+});
+
+export const getUser = cache(async () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = await db.query.user.findFirst({
+    where: eq(user.id, userId),
+  });
+
   return data;
 });
 
 export const getItemsByActiveGame = cache(async () => {
   const { userId } = auth();
-  const userProgress = await getUserProgress();
+  const user = await getUser();
 
-  if (!userId || !userProgress?.activeGameId) {
+  if (!userId || !user?.activeGameId) {
     return [];
   }
 
   const data = db.query.items.findMany({
-    where: eq(items.gameId, userProgress.activeGameId),
+    where: eq(items.game_id, user.activeGameId),
   });
 
   return data;
 });
 
 // get by UserID and activegame id
-export const getItemState = cache(async (user: any) => {
-  const { userId } = auth();
-  const userProgress = await getUserProgress();
+// export const getItemState = cache(async (user: any) => {
+//   const { userId } = auth();
+//   const userProgress = await getUserProgress();
+//
+//   if (!userId) {
+//     return null;
+//   }
+//
+//   const data = db.query.itemStates.findFirst({
+//     where: eq(itemStates.userId, userId),
+//
+//     with: {
+//       item: true,
+//       game: true,
+//     },
+//   });
+//
+//   return data;
+// });
 
-  if (!userId) {
-    return null;
-  }
-
-  const data = db.query.itemStates.findFirst({
-    where: eq(itemStates.userId, userId),
-
-    with: {
-      item: true,
-      game: true,
-    },
-  });
-
-  return data;
-});
-
-export const getUserProgress = cache(async () => {
-  const { userId } = auth();
-
-  if (!userId) {
-    return null;
-  }
-
-  const data = await db.query.userProgress.findFirst({
-    where: eq(userProgress.userId, userId),
-    with: {
-      activeGame: true,
-    },
-  });
-
-  return data;
-});
+// export const getUserProgress = cache(async () => {
+//   const { userId } = auth();
+//
+//   if (!userId) {
+//     return null;
+//   }
+//
+//   const data = await db.query.userProgress.findFirst({
+//     where: eq(userProgress.userId, userId),
+//     with: {
+//       activeGame: true,
+//     },
+//   });
+//
+//   return data;
+// });
 
 // export const getItemsWithState = cache(async (userId: string) => {
 //   const data = await db.query.items.findMany({
