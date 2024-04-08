@@ -9,76 +9,93 @@ const main = async () => {
   try {
     console.log("Seeding database");
 
-    await db.delete(schema.Games);
-    await db.delete(schema.Items);
-    await db.delete(schema.ItemStates);
-    await db.delete(schema.UserItems);
+    await db.delete(schema.games);
+    await db.delete(schema.items);
+    await db.delete(schema.itemStates);
+    await db.delete(schema.user);
+    await db.delete(schema.userItems);
 
-    await db.insert(schema.Games).values([
+    await db.insert(schema.games).values([
       {
-        game_id: 1,
+        id: 1,
         name: "Ocarina of Time",
-        image_src: "/ocarina-time.png",
+        imageSrc: "/ocarina-time.png",
       },
       {
-        game_id: 2,
+        id: 2,
         name: "Majora's Mask",
-        image_src: "/deku-stick.png",
+        imageSrc: "/deku-stick.png",
       },
     ]);
 
-    await db.insert(schema.ItemStates).values([
+    await db.insert(schema.itemStates).values([
       {
-        state_id: 1,
+        id: 1,
         state: "NOT FOUND",
       },
       {
-        state_id: 2,
+        id: 2,
         state: "FOUND",
       },
       {
-        state_id: 3,
+        id: 3,
         state: "UPGRADED 1",
       },
     ]);
 
-    await db.insert(schema.Items).values([
+    await db.insert(schema.items).values([
       {
-        item_id: 1,
+        id: 1,
         game_id: 1,
         name: "deku-stick",
-        image_src: "/deku-stick.png",
-        item_state: 1,
+        imageSrc: "/deku-stick.png",
       },
       {
-        item_id: 2,
+        id: 2,
         game_id: 1,
         name: "fairy-ocarina",
-        image_src: "/fairy-ocarina.png",
-        item_state: 2,
+        imageSrc: "/fairy-ocarina.png",
       },
       {
-        item_id: 3,
+        id: 3,
         game_id: 2,
         name: "ocarina-of-time",
-        image_src: "/ocarina-time.png",
-        item_state: 3,
       },
     ]);
 
-    await db.insert(schema.UserItems).values([
+    await db.insert(schema.user).values([
       {
-        user_id: "1",
-        user_name: "Link",
-        user_image_src: "/link.png",
-        active_game_id: 1,
+        id: "1",
+        userName: "Link",
+        userImageSrc: "/link.png",
+        activeGameId: 1,
       },
-
       {
+        id: "2",
+        userName: "Zelda",
+        userImageSrc: "/zelda.png",
+        activeGameId: 2,
+      },
+    ]);
+
+    await db.insert(schema.userItems).values([
+      {
+        id: 1,
+        user_id: "1",
+        item_id: 1,
+        state_id: 1,
+      },
+      {
+        id: 2,
+        user_id: "1",
+        item_id: 2,
+        state_id: 2,
+      },
+      {
+        id: 3,
         user_id: "2",
-        user_name: "Zelda",
-        user_image_src: "/zelda.png",
-        active_game_id: 2,
+        item_id: 2,
+        state_id: 1,
       },
     ]);
 
