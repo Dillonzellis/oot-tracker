@@ -1,6 +1,6 @@
 "use client";
 
-import { games, userProgress } from "@/db/schema";
+import { games, user } from "@/db/schema";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "./card";
@@ -8,7 +8,7 @@ import { upsertUserProgress } from "@/db/actions/userItems";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
-  activeGameId?: typeof userProgress.$inferSelect.activeGameId;
+  activeGameId?: (typeof user.$inferSelect)["activeGameId"];
 };
 
 export const GameList = ({ games, activeGameId }: Props) => {
@@ -31,13 +31,13 @@ export const GameList = ({ games, activeGameId }: Props) => {
     <div className="flex justify-center gap-12">
       {games.map((game) => (
         <Card
-          key={game.gameId}
-          title={game.gameName}
-          id={game.gameId}
+          key={game.id}
+          title={game.name}
+          id={game.id}
           imageSrc={game.imageSrc}
           onClick={onClick}
           disabled={pending}
-          active={game.gameId === activeGameId}
+          active={game.id === activeGameId}
         />
       ))}
     </div>

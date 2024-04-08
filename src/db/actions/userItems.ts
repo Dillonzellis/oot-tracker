@@ -4,16 +4,16 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import db from "@/db/drizzle";
-import { getGamebyId, getUserProgress } from "../queries";
-import { itemStates, userProgress } from "../schema";
+import { getGamebyId, getUser } from "../queries";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
+import { user } from "../schema";
 
 export const upsertUserProgress = async (gameId: number) => {
   const { userId } = auth();
-  const user = await currentUser();
+  const clerkUser = await currentUser();
 
-  if (!userId || !user) {
+  if (!userId || !clerkUser) {
     throw new Error("Unauthorized");
   }
 
@@ -23,34 +23,29 @@ export const upsertUserProgress = async (gameId: number) => {
     throw new Error("game not found");
   }
 
-  const existingUserProgress = await getUserProgress();
+  const existingUser = await getUser();
 
-  if (existingUserProgress) {
+  if (existingUser) {
     await db
-      .update(userProgress)
+      .update(user)
       .set({
+        userName: clerkUser.firstName || "User",
+        userImageSrc: clerkUser.imageUrl || "/mascot.svg",
         activeGameId: gameId,
-        userName: user.firstName || "User",
-        userImageSrc: user.imageUrl || "/mascot.svg",
       })
-      .where(eq(userProgress.userId, userId));
+      .where(eq(user.id, userId));
 
     revalidatePath("/games");
     revalidatePath("/tracker");
     redirect("/tracker");
   }
 
-  await db.insert(userProgress).values({
-    userId,
-    userName: user.firstName || "User",
-    userImageSrc: user.imageUrl || "/mascot.svg",
+  await db.insert(user).values({
+    id: userId,
+    userName: clerkUser.firstName || "User",
+    userImageSrc: clerkUser.imageUrl || "/mascot.svg",
     activeGameId: gameId,
   });
-
-  // await db.insert(itemStates).values({
-  //   userId,
-  //   itemId: 1,
-  // });
 
   revalidatePath("/games");
   revalidatePath("/tracker");

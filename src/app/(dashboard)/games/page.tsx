@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { GameList } from "./game-list";
-import { getGames, getUserProgress } from "@/db/queries";
+import { getGames, getUser } from "@/db/queries";
 import { ReactNode } from "react";
 
 const Heading = ({ children }: { children: ReactNode }) => {
@@ -9,25 +9,22 @@ const Heading = ({ children }: { children: ReactNode }) => {
 
 export default async function GamesPage() {
   const gamesData = await getGames();
-  const userProgressData = await getUserProgress();
+  const userData = await getUser();
 
-  const [games, userProgress] = await Promise.all([
-    gamesData,
-    userProgressData,
-  ]);
+  const [games, user] = await Promise.all([gamesData, userData]);
 
   return (
     <main className="">
       <MaxWidthWrapper>
-        {userProgress ? (
+        {user ? (
           <Heading>
-            Hello, {userProgress.userName} pick up where you left off? or start
-            a new game?
+            Hello, {user.userName} pick up where you left off? or start a new
+            game?
           </Heading>
         ) : (
           <Heading>Pick a game</Heading>
         )}
-        <GameList games={games} activeGameId={userProgress?.activeGameId} />
+        <GameList games={games} activeGameId={user?.activeGameId} />
       </MaxWidthWrapper>
     </main>
   );
