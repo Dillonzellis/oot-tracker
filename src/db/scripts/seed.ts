@@ -11,8 +11,7 @@ const main = async () => {
 
     await db.delete(schema.games);
     await db.delete(schema.items);
-    await db.delete(schema.itemStates);
-    await db.delete(schema.user);
+    await db.delete(schema.users);
     await db.delete(schema.userItems);
 
     await db.insert(schema.games).values([
@@ -25,21 +24,6 @@ const main = async () => {
         id: 2,
         name: "Majora's Mask",
         imageSrc: "/deku-stick.png",
-      },
-    ]);
-
-    await db.insert(schema.itemStates).values([
-      {
-        id: 1,
-        state: "NOT FOUND",
-      },
-      {
-        id: 2,
-        state: "FOUND",
-      },
-      {
-        id: 3,
-        state: "UPGRADED 1",
       },
     ]);
 
@@ -63,7 +47,7 @@ const main = async () => {
       },
     ]);
 
-    await db.insert(schema.user).values([
+    await db.insert(schema.users).values([
       {
         id: "1",
         userName: "Link",
@@ -83,19 +67,7 @@ const main = async () => {
         id: 1,
         user_id: "1",
         item_id: 1,
-        state_id: 1,
-      },
-      {
-        id: 2,
-        user_id: "1",
-        item_id: 2,
-        state_id: 2,
-      },
-      {
-        id: 3,
-        user_id: "2",
-        item_id: 2,
-        state_id: 1,
+        state: "NOT_FOUND",
       },
     ]);
 

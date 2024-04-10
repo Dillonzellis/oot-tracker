@@ -4,47 +4,76 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import db from "@/db/drizzle";
-import { getGamebyId, getUser } from "../queries";
+import { getGamebyId, getItemsByGame, getUser } from "../queries";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
-import { user } from "../schema";
+import { users, userItems } from "../schema";
 
-export const upsertUserProgress = async (gameId: number) => {
+export const upsertUserActiveGame = async (gameId: number) => {
   const { userId } = auth();
   const clerkUser = await currentUser();
+  const existingUser = await getUser();
+  const game = await getGamebyId(gameId);
+  const items = await getItemsByGame(gameId);
 
   if (!userId || !clerkUser) {
     throw new Error("Unauthorized");
   }
 
-  const game = await getGamebyId(gameId);
-
   if (!game) {
     throw new Error("game not found");
   }
 
-  const existingUser = await getUser();
-
   if (existingUser) {
     await db
-      .update(user)
+      .update(users)
       .set({
         userName: clerkUser.firstName || "User",
         userImageSrc: clerkUser.imageUrl || "/mascot.svg",
         activeGameId: gameId,
       })
-      .where(eq(user.id, userId));
+      .where(eq(users.id, userId));
+
+    if (existingUser.activeGameId !== gameId) {
+      await db.delete(userItems).where(eq(userItems.user_id, userId));
+      items.map(async (item) => {
+        await db.insert(userItems).values({
+          user_id: userId,
+          item_id: item.id,
+          state: "NOT_FOUND",
+        });
+      });
+      revalidatePath("/games");
+      revalidatePath("/tracker");
+      redirect("/tracker");
+    }
+
+    items.map(async (item) => {
+      await db.insert(userItems).values({
+        user_id: userId,
+        item_id: item.id,
+        state: "NOT_FOUND",
+      });
+    });
 
     revalidatePath("/games");
     revalidatePath("/tracker");
     redirect("/tracker");
   }
 
-  await db.insert(user).values({
+  await db.insert(users).values({
     id: userId,
     userName: clerkUser.firstName || "User",
     userImageSrc: clerkUser.imageUrl || "/mascot.svg",
     activeGameId: gameId,
+  });
+
+  items.map(async (item) => {
+    await db.insert(userItems).values({
+      user_id: userId,
+      item_id: item.id,
+      state: "NOT_FOUND",
+    });
   });
 
   revalidatePath("/games");

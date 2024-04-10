@@ -4,7 +4,7 @@ import { games, user } from "@/db/schema";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "./card";
-import { upsertUserProgress } from "@/db/actions/userItems";
+import { upsertUserActiveGame } from "@/db/actions/userItems";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
@@ -23,7 +23,9 @@ export const GameList = ({ games, activeGameId }: Props) => {
     }
 
     startTransition(() => {
-      upsertUserProgress(id).catch(() => console.log("Something went wrong."));
+      upsertUserActiveGame(id).catch(() =>
+        console.log("Something went wrong."),
+      );
     });
   };
 
