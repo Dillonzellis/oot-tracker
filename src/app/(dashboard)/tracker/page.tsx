@@ -1,16 +1,21 @@
 import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { getItemsByActiveGame, getUser } from "@/db/queries";
+import {
+  getItemsByActiveGame,
+  getItemsByUserWithState,
+  getUser,
+} from "@/db/queries";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
   const userData = await getUser();
   const gameItemsData = await getItemsByActiveGame();
+  const userItemsData = await getItemsByUserWithState();
 
-  const [user, gameItems, itemState] = await Promise.all([
+  const [user, userItems, gameItems] = await Promise.all([
     userData,
+    userItemsData,
     gameItemsData,
-    // itemStatesData,
   ]);
 
   if (!user || !user.activeGameId) {
@@ -20,12 +25,20 @@ export default async function Home() {
   return user.activeGameId ? (
     <main className="">
       <MaxWidthWrapper>
+        {JSON.stringify(userItems.map((item) => item.id + item.state))}
         <h1 className="scroll-m-20 pt-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
           {user.activeGameId}
         </h1>
         <div className="flex gap-x-4">
-          {gameItems.map((item) => (
-            <Item key={item.id} item={item} />
+          {gameItems.map((gameItem) => (
+            <Item
+              key={gameItem.id}
+              item={gameItem}
+              state={
+                userItems.find((userItem) => userItem.item_id === gameItem.id)
+                  ?.state
+              }
+            />
           ))}
         </div>
       </MaxWidthWrapper>
