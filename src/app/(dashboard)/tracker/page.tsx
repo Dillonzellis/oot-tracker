@@ -1,33 +1,33 @@
 import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import {
+  getGamebyId,
   getItemsByActiveGame,
   getItemsByUserWithState,
   getUser,
-  getUserGames,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const userData = await getUser();
-  const gameItemsData = await getItemsByActiveGame();
-  const userItemsData = await getItemsByUserWithState();
-
-  const [user, userItems, gameItems] = await Promise.all([
-    userData,
-    userItemsData,
-    gameItemsData,
-  ]);
-
+  const user = await getUser();
   if (!user || !user.activeGameId) {
     redirect("/games");
   }
+
+  const gameItemsData = await getItemsByActiveGame();
+  const userItemsData = await getItemsByUserWithState();
+  const game = await getGamebyId(user.activeGameId);
+
+  const [userItems, gameItems] = await Promise.all([
+    userItemsData,
+    gameItemsData,
+  ]);
 
   return user.activeGameId ? (
     <main className="">
       <MaxWidthWrapper>
         <h1 className="scroll-m-20 pt-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {user.activeGameId}
+          {game?.name}
         </h1>
         <div className="flex gap-x-4">
           {gameItems.map((gameItem) => (
