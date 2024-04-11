@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { users, userItems, userGames } from "../schema";
 
+//TODO: pull out the logic to a separate function
 export const upsertUserActiveGame = async (gameId: number) => {
   const { userId } = auth();
   const clerkUserData = await currentUser();
@@ -57,7 +58,8 @@ export const upsertUserActiveGame = async (gameId: number) => {
         });
       });
     }
-
+    //TODO: Add a revalidatePath function
+    //TODO: dont revalidatePath everytime
     revalidatePath("/games");
     revalidatePath("/tracker");
     redirect("/tracker");
