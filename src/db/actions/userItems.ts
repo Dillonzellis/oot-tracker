@@ -40,11 +40,6 @@ export const upsertUserActiveGame = async (gameId: number) => {
         user_id: userId,
         game_id: gameId,
       });
-    }
-
-    if (existingUser.activeGameId !== gameId) {
-      // only insert new items if game has never been picked before. If user is switching games, don't insert new items
-
       items.map(async (item) => {
         await db.insert(userItems).values({
           user_id: userId,
@@ -52,18 +47,7 @@ export const upsertUserActiveGame = async (gameId: number) => {
           state: "NOT_FOUND",
         });
       });
-      revalidatePath("/games");
-      revalidatePath("/tracker");
-      redirect("/tracker");
     }
-
-    items.map(async (item) => {
-      await db.insert(userItems).values({
-        user_id: userId,
-        item_id: item.id,
-        state: "NOT_FOUND",
-      });
-    });
 
     revalidatePath("/games");
     revalidatePath("/tracker");
@@ -77,18 +61,19 @@ export const upsertUserActiveGame = async (gameId: number) => {
     activeGameId: gameId,
   });
 
-  await db.insert(userGames).values({
-    user_id: userId,
-    game_id: gameId,
-  });
-
-  items.map(async (item) => {
-    await db.insert(userItems).values({
+  if (!existingUserGames.find((game) => game.game_id === gameId)) {
+    await db.insert(userGames).values({
       user_id: userId,
-      item_id: item.id,
-      state: "NOT_FOUND",
+      game_id: gameId,
     });
-  });
+    items.map(async (item) => {
+      await db.insert(userItems).values({
+        user_id: userId,
+        item_id: item.id,
+        state: "NOT_FOUND",
+      });
+    });
+  }
 
   revalidatePath("/games");
   revalidatePath("/tracker");
