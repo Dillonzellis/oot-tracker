@@ -4,10 +4,10 @@ import { auth, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import db from "@/db/drizzle";
-import { getGamebyId, getItemsByGame, getUser } from "../queries";
+import { getGamebyId, getItemsByGame, getUser, getUserGames } from "../queries";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
-import { users, userItems } from "../schema";
+import { users, userItems, userGames } from "../schema";
 
 export const upsertUserActiveGame = async (gameId: number) => {
   const { userId } = auth();
@@ -15,6 +15,7 @@ export const upsertUserActiveGame = async (gameId: number) => {
   const existingUser = await getUser();
   const game = await getGamebyId(gameId);
   const items = await getItemsByGame(gameId);
+  const existingUserGames = await getUserGames();
 
   if (!userId || !clerkUser) {
     throw new Error("Unauthorized");
@@ -34,8 +35,16 @@ export const upsertUserActiveGame = async (gameId: number) => {
       })
       .where(eq(users.id, userId));
 
+    if (!existingUserGames.find((game) => game.game_id === gameId)) {
+      await db.insert(userGames).values({
+        user_id: userId,
+        game_id: gameId,
+      });
+    }
+
     if (existingUser.activeGameId !== gameId) {
-      await db.delete(userItems).where(eq(userItems.user_id, userId));
+      // only insert new items if game has never been picked before. If user is switching games, don't insert new items
+
       items.map(async (item) => {
         await db.insert(userItems).values({
           user_id: userId,
@@ -66,6 +75,11 @@ export const upsertUserActiveGame = async (gameId: number) => {
     userName: clerkUser.firstName || "User",
     userImageSrc: clerkUser.imageUrl || "/mascot.svg",
     activeGameId: gameId,
+  });
+
+  await db.insert(userGames).values({
+    user_id: userId,
+    game_id: gameId,
   });
 
   items.map(async (item) => {

@@ -23,10 +23,6 @@ export const itemRelations = relations(items, ({ one }) => ({
     fields: [items.game_id],
     references: [games.id],
   }),
-  // userItems: one(userItems, {
-  //   fields: [items.id],
-  //   references: [userItems.item_id],
-  // }),
 }));
 
 export const itemStateEnum = pgEnum("state", [
@@ -34,11 +30,6 @@ export const itemStateEnum = pgEnum("state", [
   "FOUND",
   "UPGRADED_1",
 ]);
-
-// export const itemStates = pgTable("item_states", {
-//   id: serial("id").primaryKey(),
-//   state: itemStateEnum("state").notNull().default("NOT FOUND"),
-// });
 
 export const users = pgTable("user", {
   id: text("id").primaryKey(),
@@ -48,6 +39,40 @@ export const users = pgTable("user", {
     onDelete: "cascade",
   }),
 });
+
+export const userGames = pgTable("user_games", {
+  id: serial("id").primaryKey(),
+  user_id: text("user_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
+  game_id: integer("game_id").references(() => games.id, {
+    onDelete: "cascade",
+  }),
+});
+
+export const userGameRelations = relations(userGames, ({ one }) => ({
+  user: one(users, {
+    fields: [userGames.user_id],
+    references: [users.id],
+  }),
+  game: one(games, {
+    fields: [userGames.game_id],
+    references: [games.id],
+  }),
+}));
+
+// export const userItemRelations = relations(userItems, ({ one }) => ({
+//   user: one(users, {
+//     fields: [userItems.user_id],
+//     references: [users.id],
+//   }),
+//   item: one(items, {
+//     fields: [userItems.item_id],
+//     references: [items.id],
+//   }),
+// }));
 
 export const userItems = pgTable("user_items", {
   id: serial("id").primaryKey(),
@@ -63,18 +88,6 @@ export const userItems = pgTable("user_items", {
     }),
   state: itemStateEnum("state").notNull().default("NOT_FOUND"),
 });
-
-// export const userItemRelations = relations(userItems, ({ one, many }) => ({
-//   user: one(user, {
-//     fields: [userItems.user_id],
-//     references: [user.id],
-//   }),
-//   items: many(items),
-//   state: one(itemStates, {
-//     fields: [userItems.state_id],
-//     references: [itemStates.id],
-//   }),
-// }));
 
 export const userItemRelations = relations(userItems, ({ one }) => ({
   user: one(users, {

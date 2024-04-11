@@ -13,6 +13,7 @@ const main = async () => {
     await db.delete(schema.items);
     await db.delete(schema.users);
     await db.delete(schema.userItems);
+    await db.delete(schema.userGames);
 
     await db.insert(schema.games).values([
       {
@@ -68,6 +69,14 @@ const main = async () => {
         user_id: "1",
         item_id: 1,
         state: "NOT_FOUND",
+      },
+    ]);
+
+    await db.insert(schema.userGames).values([
+      {
+        id: 1,
+        user_id: "1",
+        game_id: 1,
       },
     ]);
 
