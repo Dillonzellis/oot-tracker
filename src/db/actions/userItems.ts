@@ -11,11 +11,20 @@ import { users, userItems, userGames } from "../schema";
 
 export const upsertUserActiveGame = async (gameId: number) => {
   const { userId } = auth();
-  const clerkUser = await currentUser();
-  const existingUser = await getUser();
-  const game = await getGamebyId(gameId);
-  const items = await getItemsByGame(gameId);
-  const existingUserGames = await getUserGames();
+  const clerkUserData = await currentUser();
+  const existingUserData = await getUser();
+  const gameData = await getGamebyId(gameId);
+  const itemsData = await getItemsByGame(gameId);
+  const existingUserGamesData = await getUserGames();
+
+  const [clerkUser, existingUser, game, items, existingUserGames] =
+    await Promise.all([
+      clerkUserData,
+      existingUserData,
+      gameData,
+      itemsData,
+      existingUserGamesData,
+    ]);
 
   if (!userId || !clerkUser) {
     throw new Error("Unauthorized");
