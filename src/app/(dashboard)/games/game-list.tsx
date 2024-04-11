@@ -1,6 +1,6 @@
 "use client";
 
-import { games, user } from "@/db/schema";
+import { games, users } from "@/db/schema";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "./card";
@@ -8,7 +8,7 @@ import { upsertUserActiveGame } from "@/db/actions/userItems";
 
 type Props = {
   games: (typeof games.$inferSelect)[];
-  activeGameId?: (typeof user.$inferSelect)["activeGameId"];
+  activeGameId?: (typeof users.$inferSelect)["activeGameId"];
 };
 
 export const GameList = ({ games, activeGameId }: Props) => {
