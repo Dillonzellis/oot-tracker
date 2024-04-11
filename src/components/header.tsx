@@ -7,7 +7,10 @@ export const Header = () => {
     <header className="border-b py-4">
       <MaxWidthWrapper className="">
         <div className="flex items-center justify-between">
-          <Link href="/">TrackerHub</Link>
+          <div className="space-x-4">
+            <Link href="/">TrackerHub</Link>
+            <Link href="/games">Games</Link>
+          </div>
           <UserButton />
         </div>
       </MaxWidthWrapper>
