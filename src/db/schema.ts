@@ -63,6 +63,8 @@ export const itemStateEnum = pgEnum("state", [
   "UPGRADED_1",
 ]);
 
+export const itemStateType = typeof itemStateEnum;
+
 export const userItems = pgTable("user_items", {
   id: serial("id").primaryKey(),
   user_id: text("user_id")

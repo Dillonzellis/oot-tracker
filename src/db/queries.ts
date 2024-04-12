@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs";
 
 import db from "./drizzle";
@@ -80,10 +80,17 @@ export const getItemsByUserWithState = cache(async () => {
   return data;
 });
 
-export const getCurrentState = cache(async (itemId: number) => {
+export const getCurrentState = async (itemId: number) => {
+  const { userId } = auth();
+  const user = await getUser();
+
+  if (!userId || !user?.activeGameId) {
+    return [];
+  }
+
   const data = db.query.userItems.findFirst({
-    where: eq(userItems.item_id, itemId),
+    where: and(eq(userItems.user_id, userId), eq(userItems.item_id, itemId)),
   });
 
   return data;
-});
+};
