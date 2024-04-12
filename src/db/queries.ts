@@ -79,3 +79,11 @@ export const getItemsByUserWithState = cache(async () => {
 
   return data;
 });
+
+export const getCurrentState = cache(async (itemId: number) => {
+  const data = db.query.userItems.findFirst({
+    where: eq(userItems.item_id, itemId),
+  });
+
+  return data;
+});
