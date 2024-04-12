@@ -25,12 +25,6 @@ export const itemRelations = relations(items, ({ one }) => ({
   }),
 }));
 
-export const itemStateEnum = pgEnum("state", [
-  "NOT_FOUND",
-  "FOUND",
-  "UPGRADED_1",
-]);
-
 export const users = pgTable("user", {
   id: text("id").primaryKey(),
   userName: text("user_name").notNull().default("User"),
@@ -63,16 +57,11 @@ export const userGameRelations = relations(userGames, ({ one }) => ({
   }),
 }));
 
-// export const userItemRelations = relations(userItems, ({ one }) => ({
-//   user: one(users, {
-//     fields: [userItems.user_id],
-//     references: [users.id],
-//   }),
-//   item: one(items, {
-//     fields: [userItems.item_id],
-//     references: [items.id],
-//   }),
-// }));
+export const itemStateEnum = pgEnum("state", [
+  "NOT_FOUND",
+  "FOUND",
+  "UPGRADED_1",
+]);
 
 export const userItems = pgTable("user_items", {
   id: serial("id").primaryKey(),
