@@ -1,4 +1,3 @@
-import { Item } from "@/components/item";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import {
   getGamebyId,
@@ -7,6 +6,7 @@ import {
   getUser,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
+import { Item } from "./item";
 
 export default async function Home() {
   const user = await getUser();
