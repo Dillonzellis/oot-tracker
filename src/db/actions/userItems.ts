@@ -54,9 +54,11 @@ export const upsertUserActiveGame = async (gameId: number) => {
         await db.insert(userItems).values({
           user_id: userId,
           item_id: item.id,
-          state: "NOT_FOUND",
         });
       });
+
+      revalidatePath("/games");
+      revalidatePath("/tracker");
     }
     //TODO: Add a revalidatePath function
     //TODO: dont revalidatePath everytime
@@ -72,19 +74,17 @@ export const upsertUserActiveGame = async (gameId: number) => {
     activeGameId: gameId,
   });
 
-  if (!existingUserGames.find((game) => game.game_id === gameId)) {
-    await db.insert(userGames).values({
+  await db.insert(userGames).values({
+    user_id: userId,
+    game_id: gameId,
+  });
+
+  items.map(async (item) => {
+    await db.insert(userItems).values({
       user_id: userId,
-      game_id: gameId,
+      item_id: item.id,
     });
-    items.map(async (item) => {
-      await db.insert(userItems).values({
-        user_id: userId,
-        item_id: item.id,
-        state: "NOT_FOUND",
-      });
-    });
-  }
+  });
 
   revalidatePath("/games");
   revalidatePath("/tracker");

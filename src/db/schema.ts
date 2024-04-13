@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, serial, text, integer, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
 
 export const games = pgTable("games", {
   id: serial("id").primaryKey(),
@@ -16,6 +16,7 @@ export const items = pgTable("items", {
     .references(() => games.id, {
       onDelete: "cascade",
     }),
+  maxStateIndex: integer("max_state_index").notNull().default(1),
 });
 
 export const itemRelations = relations(items, ({ one }) => ({
@@ -57,14 +58,6 @@ export const userGameRelations = relations(userGames, ({ one }) => ({
   }),
 }));
 
-export const itemStateEnum = pgEnum("state", [
-  "NOT_FOUND",
-  "FOUND",
-  "UPGRADED_1",
-]);
-
-export const itemStateType = typeof itemStateEnum;
-
 export const userItems = pgTable("user_items", {
   id: serial("id").primaryKey(),
   user_id: text("user_id")
@@ -77,7 +70,7 @@ export const userItems = pgTable("user_items", {
     .references(() => items.id, {
       onDelete: "cascade",
     }),
-  state: itemStateEnum("state").notNull().default("NOT_FOUND"),
+  currentStateIndex: integer("current_state_index").notNull().default(0),
 });
 
 export const userItemRelations = relations(userItems, ({ one }) => ({

@@ -10,6 +10,7 @@ const main = async () => {
     console.log("Seeding database");
 
     await db.delete(schema.games);
+    // await db.delete(schema.itemStates);
     await db.delete(schema.items);
     await db.delete(schema.users);
     await db.delete(schema.userItems);
@@ -48,6 +49,14 @@ const main = async () => {
       },
     ]);
 
+    // await db.insert(schema.itemStates).values([
+    //   {
+    //     id: 1,
+    //     item_id: 1,
+    //     stateIndex: 1,
+    //   },
+    // ]);
+
     await db.insert(schema.users).values([
       {
         id: "1",
@@ -63,20 +72,25 @@ const main = async () => {
       },
     ]);
 
-    await db.insert(schema.userItems).values([
-      {
-        id: 1,
-        user_id: "1",
-        item_id: 1,
-        state: "NOT_FOUND",
-      },
-    ]);
-
     await db.insert(schema.userGames).values([
       {
         id: 1,
         user_id: "1",
         game_id: 1,
+      },
+      {
+        id: 2,
+        user_id: "2",
+        game_id: 2,
+      },
+    ]);
+
+    await db.insert(schema.userItems).values([
+      {
+        id: 1,
+        user_id: "1",
+        item_id: 1,
+        currentStateIndex: 0,
       },
     ]);
 
