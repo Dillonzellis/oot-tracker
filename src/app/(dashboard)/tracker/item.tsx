@@ -8,11 +8,13 @@ import { updateState } from "@/db/actions/updateState";
 
 type Props = {
   item: typeof items.$inferSelect;
-  state?: string;
+  state?: number;
 };
 
 export const Item = ({ item, state }: Props) => {
   const [pending, startTransition] = useTransition();
+
+  console.log("from item", state);
 
   const onClick = (itemId: number) => {
     // if (id === activeGameId) {
@@ -31,7 +33,7 @@ export const Item = ({ item, state }: Props) => {
         alt="oot"
         height={80}
         width={80}
-        className={cn(state === "FOUND" ? "opacity-100" : "opacity-30")}
+        className={cn(state === 1 ? "opacity-100" : "opacity-30")}
       />
     </div>
   );

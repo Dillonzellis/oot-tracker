@@ -66,7 +66,7 @@ export const getItemsByActiveGame = cache(async () => {
   return data;
 });
 
-export const getItemsByUserWithState = cache(async () => {
+export const getItemsByUserItems = cache(async () => {
   const { userId } = auth();
 
   if (!userId) {

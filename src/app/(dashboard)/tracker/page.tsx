@@ -2,7 +2,8 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import {
   getGamebyId,
   getItemsByActiveGame,
-  getItemsByUserWithState,
+  getItemsByUserItems,
+  getCurrentState,
   getUser,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
@@ -15,13 +16,22 @@ export default async function Home() {
   }
 
   const gameItemsData = await getItemsByActiveGame();
-  const userItemsData = await getItemsByUserWithState();
+  const userItemsData = await getItemsByUserItems();
   const game = await getGamebyId(user.activeGameId);
 
   const [userItems, gameItems] = await Promise.all([
     userItemsData,
     gameItemsData,
   ]);
+
+  // const currentState = await getCurrentState(userItems[0].item_id);
+
+  const itemsWithState = await Promise.all(
+    gameItems.map(async (gameItem) => {
+      const state = await getCurrentState(gameItem.id);
+      return { ...gameItem, state }; // Merge state with gameItem properties
+    }),
+  );
 
   return user.activeGameId ? (
     <main className="">
@@ -30,15 +40,8 @@ export default async function Home() {
           {game?.name}
         </h1>
         <div className="flex gap-x-4">
-          {gameItems.map((gameItem) => (
-            <Item
-              key={gameItem.id}
-              item={gameItem}
-              state={
-                userItems.find((userItem) => userItem.item_id === gameItem.id)
-                  ?.state
-              }
-            />
+          {itemsWithState.map((item) => (
+            <Item key={item.id} item={item} state={item.state} />
           ))}
         </div>
       </MaxWidthWrapper>
