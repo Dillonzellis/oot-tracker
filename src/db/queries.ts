@@ -80,17 +80,30 @@ export const getItemsByUserWithState = cache(async () => {
   return data;
 });
 
+export const getItemMaxStateIndex = async (itemId: number) => {
+  const data = await db
+    .select({
+      maxStateIndex: items.maxStateIndex,
+    })
+    .from(items)
+    .where(eq(items.id, itemId))
+    .execute();
+
+  return data;
+};
+
 export const getCurrentState = async (itemId: number) => {
   const { userId } = auth();
-  const user = await getUser();
 
-  if (!userId || !user?.activeGameId) {
+  if (!userId) {
     return [];
   }
 
-  const data = db.query.userItems.findFirst({
-    where: and(eq(userItems.user_id, userId), eq(userItems.item_id, itemId)),
-  });
+  const data = await db
+    .select({ state: userItems.currentStateIndex })
+    .from(userItems)
+    .where(and(eq(userItems.user_id, userId), eq(userItems.item_id, itemId)))
+    .execute();
 
   return data;
 };
