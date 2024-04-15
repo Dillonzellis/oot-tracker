@@ -3,29 +3,31 @@
 import db from "@/db/drizzle";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
-import { userItems, itemStateType } from "../schema";
-import { getCurrentState } from "../queries";
+import { userItems } from "../schema";
+import { getCurrentState, getItemMaxStateIndex } from "../queries";
 
 export const updateState = async (itemId: number) => {
   const currentState = await getCurrentState(itemId);
+  const maxStateIndex = await getItemMaxStateIndex(itemId);
 
-  // if (!currentState) {
-  //   throw new Error("Item not found");
-  // }
+  console.log("Current state", currentState);
+  console.log("Max state index", maxStateIndex);
 
-  const getNextState = (currentState: any) => {
-    const states = ["NOT_FOUND", "FOUND", "UPGRADED_1"];
-    const currentIndex = states.indexOf(currentState);
-    const nextIndex = (currentIndex + 1) % states.length;
-    return states[nextIndex];
-  };
+  if (typeof currentState !== "number" || typeof maxStateIndex !== "number") {
+    throw new Error("Invalid state or max state index; both must be numbers.");
+  }
 
-  const nextState = getNextState(currentState?.state);
+  if (currentState === undefined || maxStateIndex === undefined) {
+    throw new Error("Item not found");
+  }
+
+  const nextState = (currentState + 1) % (maxStateIndex + 1);
+  console.log("Next state", nextState);
 
   await db
     .update(userItems)
     .set({
-      state: nextState as any,
+      currentStateIndex: nextState,
     })
     .where(eq(userItems.item_id, itemId));
 

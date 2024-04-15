@@ -89,7 +89,7 @@ export const getItemMaxStateIndex = async (itemId: number) => {
     .where(eq(items.id, itemId))
     .execute();
 
-  return data;
+  return data[0].maxStateIndex;
 };
 
 export const getCurrentState = async (itemId: number) => {
@@ -105,5 +105,5 @@ export const getCurrentState = async (itemId: number) => {
     .where(and(eq(userItems.user_id, userId), eq(userItems.item_id, itemId)))
     .execute();
 
-  return data;
+  return data[0].state;
 };
