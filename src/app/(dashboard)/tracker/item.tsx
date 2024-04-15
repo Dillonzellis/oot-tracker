@@ -8,7 +8,7 @@ import { updateState } from "@/db/actions/updateState";
 
 type Props = {
   item: typeof items.$inferSelect;
-  state?: number;
+  state: number;
 };
 
 export const Item = ({ item, state }: Props) => {
