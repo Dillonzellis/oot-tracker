@@ -10,7 +10,8 @@
     "db:studio": "bunx drizzle-kit studio",
     "db:migrate": "bun run ./src/db/scripts/migration.ts",
     "db:push": "bunx drizzle-kit push:pg",
-    "db:seed": "bun ./src/db/scripts/seed.ts"
+    "db:seed": "bun ./src/db/scripts/seed.ts",
+    "db:reset": "bun ./src/db/scripts/reset.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
