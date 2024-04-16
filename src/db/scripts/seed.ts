@@ -33,18 +33,30 @@ const main = async () => {
       {
         id: 1,
         game_id: 1,
-        name: "deku stick",
+        name: "Deku Stick",
       },
       {
         id: 2,
         game_id: 1,
-        name: "fairy ocarina",
+        name: "Fairy Ocarina",
         maxStateIndex: 2,
       },
       {
         id: 3,
         game_id: 2,
-        name: "ocarina of time",
+        name: "Ocarina of Time",
+      },
+      {
+        id: 4,
+        game_id: 1,
+        name: "Bow",
+        maxStateIndex: 4,
+      },
+
+      {
+        id: 5,
+        game_id: 1,
+        name: "Boomerang",
       },
     ]);
 
@@ -68,6 +80,32 @@ const main = async () => {
         id: 4,
         itemId: 2,
         imageSrc: "/ocarina-time.png",
+      },
+      {
+        id: 5,
+        itemId: 4,
+        imageSrc: "/Bow0.png",
+      },
+      {
+        id: 6,
+        itemId: 4,
+        imageSrc: "/Bow1.png",
+      },
+      {
+        id: 7,
+        itemId: 4,
+        imageSrc: "/Bow2.png",
+      },
+      {
+        id: 8,
+        itemId: 4,
+        imageSrc: "/Bow3.png",
+      },
+
+      {
+        id: 9,
+        itemId: 5,
+        imageSrc: "/Boomerang.png",
       },
     ]);
 
