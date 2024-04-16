@@ -22,7 +22,10 @@ export default async function Home() {
 
   const itemsWithState = await Promise.all(
     gameItems.map(async (gameItem) => {
-      const state = await getCurrentState(gameItem.id);
+      let state = (await getCurrentState(gameItem.id)) as number;
+      if (!state) {
+        state = 0;
+      }
       const itemImages = await getItemImages(gameItem.id);
       return { ...gameItem, state, itemImages };
     }),
