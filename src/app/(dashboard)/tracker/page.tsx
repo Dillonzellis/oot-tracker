@@ -2,15 +2,12 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import {
   getGamebyId,
   getItemsByActiveGame,
-  getItemsByUserItems,
   getCurrentState,
   getUser,
   getItemImages,
-  getItemImgAlt,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Item } from "./item";
-import { itemImages } from "@/db/schema";
 
 export default async function Home() {
   const user = await getUser();
@@ -19,13 +16,9 @@ export default async function Home() {
   }
 
   const gameItemsData = await getItemsByActiveGame();
-  const userItemsData = await getItemsByUserItems();
   const game = await getGamebyId(user.activeGameId);
 
-  const [userItems, gameItems] = await Promise.all([
-    userItemsData,
-    gameItemsData,
-  ]);
+  const [gameItems] = await Promise.all([gameItemsData]);
 
   const itemsWithState = await Promise.all(
     gameItems.map(async (gameItem) => {

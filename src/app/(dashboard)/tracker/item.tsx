@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { itemImages, items } from "@/db/schema";
+import { items } from "@/db/schema";
 import { useTransition } from "react";
 import { updateState } from "@/db/actions/updateState";
 
