@@ -33,19 +33,18 @@ const main = async () => {
       {
         id: 1,
         game_id: 1,
-        name: "deku-stick",
-        // imageSrc: "/deku-stick.png",
+        name: "deku stick",
       },
       {
         id: 2,
         game_id: 1,
-        name: "fairy-ocarina",
-        // imageSrc: "/fairy-ocarina.png",
+        name: "fairy ocarina",
+        maxStateIndex: 2,
       },
       {
         id: 3,
         game_id: 2,
-        name: "ocarina-of-time",
+        name: "ocarina of time",
       },
     ]);
 

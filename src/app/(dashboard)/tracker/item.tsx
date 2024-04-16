@@ -25,22 +25,18 @@ export const Item = ({ item, state, itemImages }: Props) => {
     });
   };
 
-  // Determine the image index using state; cycle through images
   const imageIndex = state > 0 ? (state - 1) % itemImages.length : 0;
   const currentImageSrc = itemImages[imageIndex].imageSrc;
-
-  // Set image opacity: 30% if state is 0, otherwise 100%
-  const imageOpacity = state === 0 ? "opacity-30" : "opacity-100";
 
   return (
     <div onClick={() => onClick(item.id)} className="h-20 w-20 cursor-pointer">
       <Image
         src={currentImageSrc}
-        alt="oot"
+        alt={item.name}
         height={80}
         width={80}
-        className={imageOpacity}
-        priority
+        className={cn(state === 0 ? "opacity-30" : "opacity-100")}
+        priority={true}
       />
     </div>
   );

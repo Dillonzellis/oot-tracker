@@ -109,14 +109,6 @@ export const getItemImages = async (itemId: number) => {
   return data;
 };
 
-// export const getItemImages = async (itemId: number) => {
-//   const data = await db.query.itemImages.findMany({
-//     with: {
-//       item: true,
-//     },
-//   });
-// };
-
 export const getCurrentState = async (itemId: number) => {
   const { userId } = auth();
 

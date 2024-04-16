@@ -6,9 +6,11 @@ import {
   getCurrentState,
   getUser,
   getItemImages,
+  getItemImgAlt,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Item } from "./item";
+import { itemImages } from "@/db/schema";
 
 export default async function Home() {
   const user = await getUser();
@@ -32,9 +34,10 @@ export default async function Home() {
       const state = await getCurrentState(gameItem.id);
 
       const itemImages = await getItemImages(gameItem.id);
-      console.log("itemImages", itemImages);
-      console.log("state", state);
-      return { ...gameItem, state, itemImages }; // Merge state with gameItem properties
+      // console.log("itemImages", itemImages);
+      // console.log("state", state);
+
+      return { ...gameItem, state, itemImages };
     }),
   );
 
