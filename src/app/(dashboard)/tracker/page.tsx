@@ -5,6 +5,7 @@ import {
   getItemsByUserItems,
   getCurrentState,
   getUser,
+  getItemImages,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Item } from "./item";
@@ -29,7 +30,11 @@ export default async function Home() {
   const itemsWithState = await Promise.all(
     gameItems.map(async (gameItem) => {
       const state = await getCurrentState(gameItem.id);
-      return { ...gameItem, state }; // Merge state with gameItem properties
+
+      const itemImages = await getItemImages(gameItem.id);
+      console.log("itemImages", itemImages);
+      console.log("state", state);
+      return { ...gameItem, state, itemImages }; // Merge state with gameItem properties
     }),
   );
 
@@ -41,7 +46,12 @@ export default async function Home() {
         </h1>
         <div className="flex gap-x-4">
           {itemsWithState.map((item) => (
-            <Item key={item.id} item={item} state={item.state} />
+            <Item
+              key={item.id}
+              item={item}
+              state={item.state}
+              itemImages={item.itemImages}
+            />
           ))}
         </div>
       </MaxWidthWrapper>

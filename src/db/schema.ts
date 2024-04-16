@@ -10,7 +10,6 @@ export const games = pgTable("games", {
 export const items = pgTable("items", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  imageSrc: text("image_src").notNull().default("/deku-stick.png"),
   game_id: integer("game_id")
     .notNull()
     .references(() => games.id, {
@@ -19,11 +18,29 @@ export const items = pgTable("items", {
   maxStateIndex: integer("max_state_index").notNull().default(1),
 });
 
-export const itemRelations = relations(items, ({ one }) => ({
+export const itemImages = pgTable("item_images", {
+  id: serial("id").primaryKey(),
+  itemId: integer("item_id")
+    .notNull()
+    .references(() => items.id, {
+      onDelete: "cascade",
+    }),
+  imageSrc: text("image_src").notNull().default("/deku-stick.png"),
+});
+
+export const itemImagesRelations = relations(itemImages, ({ one }) => ({
+  item: one(items, {
+    fields: [itemImages.itemId],
+    references: [items.id],
+  }),
+}));
+
+export const itemRelations = relations(items, ({ one, many }) => ({
   game: one(games, {
     fields: [items.game_id],
     references: [games.id],
   }),
+  images: many(itemImages),
 }));
 
 export const users = pgTable("user", {

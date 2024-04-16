@@ -10,8 +10,8 @@ const main = async () => {
     console.log("Seeding database");
 
     await db.delete(schema.games);
-    // await db.delete(schema.itemStates);
     await db.delete(schema.items);
+    await db.delete(schema.itemImages);
     await db.delete(schema.users);
     await db.delete(schema.userItems);
     await db.delete(schema.userGames);
@@ -34,13 +34,13 @@ const main = async () => {
         id: 1,
         game_id: 1,
         name: "deku-stick",
-        imageSrc: "/deku-stick.png",
+        // imageSrc: "/deku-stick.png",
       },
       {
         id: 2,
         game_id: 1,
         name: "fairy-ocarina",
-        imageSrc: "/fairy-ocarina.png",
+        // imageSrc: "/fairy-ocarina.png",
       },
       {
         id: 3,
@@ -49,13 +49,28 @@ const main = async () => {
       },
     ]);
 
-    // await db.insert(schema.itemStates).values([
-    //   {
-    //     id: 1,
-    //     item_id: 1,
-    //     stateIndex: 1,
-    //   },
-    // ]);
+    await db.insert(schema.itemImages).values([
+      {
+        id: 1,
+        itemId: 1,
+        imageSrc: "/deku-stick.png",
+      },
+      {
+        id: 2,
+        itemId: 2,
+        imageSrc: "/fairy-ocarina.png",
+      },
+      {
+        id: 3,
+        itemId: 3,
+        imageSrc: "/ocarina-time.png",
+      },
+      {
+        id: 4,
+        itemId: 2,
+        imageSrc: "/ocarina-time.png",
+      },
+    ]);
 
     await db.insert(schema.users).values([
       {

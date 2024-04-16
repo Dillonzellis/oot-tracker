@@ -31,7 +31,5 @@ export const updateState = async (itemId: number) => {
     })
     .where(eq(userItems.item_id, itemId));
 
-  console.log("Updated state to", nextState);
-
   revalidatePath("/tracker");
 };

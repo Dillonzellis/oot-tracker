@@ -3,7 +3,14 @@ import { and, eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs";
 
 import db from "./drizzle";
-import { games, items, users, userItems, userGames } from "./schema";
+import {
+  games,
+  items,
+  users,
+  userItems,
+  userGames,
+  itemImages,
+} from "./schema";
 
 export const getGames = cache(async () => {
   const data = await db.query.games.findMany();
@@ -91,6 +98,24 @@ export const getItemMaxStateIndex = async (itemId: number) => {
 
   return data[0].maxStateIndex;
 };
+
+export const getItemImages = async (itemId: number) => {
+  const data = await db
+    .select({ imageSrc: itemImages.imageSrc })
+    .from(itemImages)
+    .where(eq(itemImages.itemId, itemId))
+    .execute();
+
+  return data;
+};
+
+// export const getItemImages = async (itemId: number) => {
+//   const data = await db.query.itemImages.findMany({
+//     with: {
+//       item: true,
+//     },
+//   });
+// };
 
 export const getCurrentState = async (itemId: number) => {
   const { userId } = auth();
