@@ -16,10 +16,6 @@ export const Item = ({ item, state, itemImages }: Props) => {
   const [pending, startTransition] = useTransition();
 
   const onClick = (itemId: number) => {
-    // if (id === activeGameId) {
-    //   return router.push("/tracker");
-    // }
-
     startTransition(() => {
       updateState(itemId).catch(() => console.log("Something went wrong."));
     });

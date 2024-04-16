@@ -10,9 +10,6 @@ export const updateState = async (itemId: number) => {
   const currentState = await getCurrentState(itemId);
   const maxStateIndex = await getItemMaxStateIndex(itemId);
 
-  console.log("Current state", currentState);
-  console.log("Max state index", maxStateIndex);
-
   if (typeof currentState !== "number" || typeof maxStateIndex !== "number") {
     throw new Error("Invalid state or max state index; both must be numbers.");
   }
@@ -22,7 +19,6 @@ export const updateState = async (itemId: number) => {
   }
 
   const nextState = (currentState + 1) % (maxStateIndex + 1);
-  console.log("Next state", nextState);
 
   await db
     .update(userItems)

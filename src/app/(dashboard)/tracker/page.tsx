@@ -27,16 +27,10 @@ export default async function Home() {
     gameItemsData,
   ]);
 
-  // const currentState = await getCurrentState(userItems[0].item_id);
-
   const itemsWithState = await Promise.all(
     gameItems.map(async (gameItem) => {
       const state = await getCurrentState(gameItem.id);
-
       const itemImages = await getItemImages(gameItem.id);
-      // console.log("itemImages", itemImages);
-      // console.log("state", state);
-
       return { ...gameItem, state, itemImages };
     }),
   );
