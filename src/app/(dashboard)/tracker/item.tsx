@@ -29,7 +29,13 @@ export const Item = ({ item, state, itemImages }: Props) => {
   const currentImageSrc = itemImages[imageIndex].imageSrc;
 
   return (
-    <div onClick={() => onClick(item.id)} className="h-20 w-20 cursor-pointer">
+    <div
+      onClick={() => onClick(item.id)}
+      className={cn(
+        "h-20 w-20 cursor-pointer",
+        pending && "pointer-events-none",
+      )}
+    >
       <Image
         src={currentImageSrc}
         alt={item.name}
